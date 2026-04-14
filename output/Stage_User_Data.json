@@ -1,0 +1,116 @@
+{
+  "source_file": "inputfiles\\bingo_data_hourly_load_CLEAN.sql",
+  "subprogram_kind": "PROCEDURE",
+  "expected_name": "Stage_User_Data",
+  "preprocessing": {
+    "parameter_block": "(\n  p_xml  XMLTYPE,\n  p_date DATE\n)",
+    "body_preview": "PROCEDURE Stage_User_Data( p_xml XMLTYPE, p_date DATE ) IS BEGIN INSERT INTO SCHEMA_ETL.STG_USERS ( external_user_id, internal_user_id, brand_code, registration_timestamp_utc, registration_timestamp_regional, registration_channel, registration_client_id, user_currency) SELECT u.external_user_id, u.internal_user_id, u.brand_code, TO_DATE(u.registration_timestamp, 'YYYY-MM-DD HH24:MI:SS'), SCHEMA_ETL.fn_convert_timezone('UTC', 'TZ_REGION', TO_DATE(u.registration_timestamp, 'YYYY-MM-DD HH24:MI:SS')\u2026"
+  },
+  "llm_extraction": {
+    "procedure_name": "Stage_User_Data",
+    "summary": "Stages user data from XML input into the staging table.",
+    "input_parameters": [
+      {
+        "name": "p_xml",
+        "data_type": "XMLTYPE",
+        "role": "input"
+      },
+      {
+        "name": "p_date",
+        "data_type": "DATE",
+        "role": "input"
+      }
+    ],
+    "source": {
+      "source_type": "XMLTYPE",
+      "source_expression": "p_xml",
+      "source_path": "/registrations/users/user"
+    },
+    "target": {
+      "target_table": "SCHEMA_ETL.STG_USERS",
+      "load_type": "INSERT"
+    },
+    "column_mappings": [
+      {
+        "target_column": "external_user_id",
+        "source_field": "externalid",
+        "transformation": "u.external_user_id",
+        "transformation_type": "direct"
+      },
+      {
+        "target_column": "internal_user_id",
+        "source_field": "internalid",
+        "transformation": "u.internal_user_id",
+        "transformation_type": "direct"
+      },
+      {
+        "target_column": "brand_code",
+        "source_field": "brand",
+        "transformation": "u.brand_code",
+        "transformation_type": "direct"
+      },
+      {
+        "target_column": "registration_timestamp_utc",
+        "source_field": "registrationtime",
+        "transformation": "TO_DATE(u.registration_timestamp, 'YYYY-MM-DD HH24:MI:SS')",
+        "transformation_type": "date_conversion"
+      },
+      {
+        "target_column": "registration_timestamp_regional",
+        "source_field": "registrationtime",
+        "transformation": "SCHEMA_ETL.fn_convert_timezone('UTC', 'TZ_REGION', TO_DATE(u.registration_timestamp, 'YYYY-MM-DD HH24:MI:SS'))",
+        "transformation_type": "timezone_conversion"
+      },
+      {
+        "target_column": "registration_channel",
+        "source_field": "channel",
+        "transformation": "u.registration_channel",
+        "transformation_type": "direct"
+      },
+      {
+        "target_column": "registration_client_id",
+        "source_field": "clientid",
+        "transformation": "u.registration_client_id",
+        "transformation_type": "direct"
+      },
+      {
+        "target_column": "user_currency",
+        "source_field": "currency",
+        "transformation": "LOWER(u.currency_code)",
+        "transformation_type": "string_manipulation"
+      }
+    ],
+    "business_rules": [],
+    "oracle_specific_features": [
+      "XMLTYPE",
+      "XMLTABLE",
+      "DUAL",
+      "TO_DATE",
+      "LOWER",
+      "SQL%ROWCOUNT"
+    ],
+    "output_characteristics": {
+      "writes_to_table": true,
+      "insert_mode": "INSERT INTO ... SELECT",
+      "uses_commit": false
+    },
+    "validation_notes": [
+      "Validations for input parameters p_xml and p_date are not visible."
+    ],
+    "warnings": [
+      "Parameter p_date is declared but not used."
+    ],
+    "confidence": "high",
+    "confidence_score": 9
+  },
+  "validation": {
+    "status": "warn",
+    "errors": [],
+    "warnings": [
+      "business_rules_empty"
+    ]
+  },
+  "confidence": "high",
+  "confidence_score": 9,
+  "human_review_recommended": false
+}

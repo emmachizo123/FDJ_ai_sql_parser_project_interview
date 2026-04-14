@@ -1,0 +1,46 @@
+{
+  "procedure_name": "string",
+  "summary": "string",
+  "input_parameters": [
+    {
+      "name": "string",
+      "data_type": "string",
+      "role": "string"
+    }
+  ],
+  "source": {
+    "source_type": "string",
+    "source_expression": "string",
+    "source_path": "string"
+  },
+  "target": {
+    "target_table": "string",
+    "load_type": "string"
+  },
+  "column_mappings": [
+    {
+      "target_column": "string",
+      "source_field": "string",
+      "transformation": "string",
+      "transformation_type": "string"
+    }
+  ],
+  "business_rules": [
+    "string"
+  ],
+  "oracle_specific_features": [
+    "string"
+  ],
+  "output_characteristics": {
+    "writes_to_table": true,
+    "insert_mode": "string",
+    "uses_commit": true
+  },
+  "validation_notes": [
+    "string"
+  ],
+  "warnings": [
+    "string"
+  ],
+  "confidence": "string"
+}

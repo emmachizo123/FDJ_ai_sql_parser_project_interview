@@ -1,0 +1,7 @@
+Output schema template (follow this shape; replace placeholders with real data):
+
+{{schema_json}}
+
+Procedure to analyze:
+
+{{procedure_text}}
